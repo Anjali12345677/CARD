@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1.0">
+	<title>task</title>
+    <style>
+        .container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+form {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+input[type="text"] {
+  padding: 10px;
+  width: 200px;
+  border: none;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.card {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.card img {
+  width: 100px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.card h2 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.card p {
+  margin-bottom: 5px;
+}
+    </style>
+</head>
+
+<body>
+	<div class="container">
+        <h1>GitHub User Card</h1>
+        <form id="usernameForm">
+          <input type="text" id="usernameInput" placeholder="Enter GitHub username">
+          <button type="submit">Get User Info</button>
+        </form>
+        <div id="cardContainer"></div>
+      </div>
+<script>
+    const form = document.getElementById('usernameForm');
+const usernameInput = document.getElementById('usernameInput');
+const cardContainer = document.getElementById('cardContainer');
+
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  
+  const username = usernameInput.value;
+  fetch(`https://api.github.com/users/${username}`)
+    .then(response => response.json())
+    .then(data => {
+      const cardHtml = `
+        <div class="card">
+          <img src="${data.avatar_url}" alt="User Avatar">
+          <h2>Username: ${data.login}</h2>
+          <p>Name: ${data.name}</p>
+          <p>No. of Public Repos: ${data.public_repos}</p>
+          <p>No. of Public Gists: ${data.public_gists}</p>
+          <p>Profile Created At: ${data.created_at}</p>
+        </div>
+      `;
+      cardContainer.innerHTML = cardHtml;
+    })
+    .catch(error => {
+      console.error(error);
+      cardContainer.innerHTML = '<p>Oops! Something went wrong. Please try again.</p>';
+    });
+});
+
+</script>    
+
+</body>
+
+</html>
